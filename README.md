@@ -58,7 +58,7 @@ GitHub can serve this as a live website for free.
 
 1. Make the repo **public** (Pages is free only on public repos):
    ```bash
-   gh repo edit Pa1kcool/cut-tracker --visibility public --accept-visibility-change-consequences
+   gh repo edit USERNAME/cut-tracker --visibility public --accept-visibility-change-consequences
    ```
    *(or do it on the site: repo → Settings → General → Change visibility)*
 
@@ -69,7 +69,7 @@ GitHub can serve this as a live website for free.
 
 3. Wait ~1 minute. Your site goes live at:
    ```
-   https://Pa1kcool.github.io/cut-tracker/
+   https://USERNAME.github.io/cut-tracker/
    ```
 
 To publish any future change, just commit and push — Pages redeploys automatically:
