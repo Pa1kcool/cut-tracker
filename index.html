@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>30-Day Cut · Plan & Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0b0a;--panel:#141614;--panel2:#1c1f1b;--line:#2a2e28;
+    --txt:#eef1ea;--mut:#8a8f84;--acid:#d8ff3e;--acid-dim:#9bb82a;--warn:#ff8a3d;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{background:var(--bg);color:var(--txt);font-family:'Hanken Grotesk',sans-serif;line-height:1.5;padding-bottom:90px;background-image:radial-gradient(circle at 80% -10%, rgba(216,255,62,.10), transparent 45%);}
+  .wrap{max-width:620px;margin:0 auto;padding:0 16px;}
+  header{padding:26px 0 14px;}
+  .kicker{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--acid);font-weight:700;}
+  h1{font-family:'Anton',sans-serif;font-size:clamp(40px,13vw,64px);line-height:.92;text-transform:uppercase;margin-top:6px;}
+  h1 span{color:var(--acid);}
+  .sub{color:var(--mut);font-size:14px;margin-top:8px;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px;}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px 8px;text-align:center;}
+  .stat b{font-family:'Anton',sans-serif;font-size:22px;color:var(--acid);display:block;line-height:1;}
+  .stat small{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);}
+  .tabs{position:sticky;top:0;z-index:20;display:flex;gap:6px;background:rgba(10,11,10,.9);backdrop-filter:blur(10px);padding:12px 0;margin-top:14px;}
+  .tab{flex:1;padding:12px 4px;border:1px solid var(--line);background:var(--panel);color:var(--mut);border-radius:12px;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:.18s;font-family:inherit;}
+  .tab.active{background:var(--acid);color:#0a0b0a;border-color:var(--acid);}
+  section{display:none;animation:fade .35s ease;}
+  section.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  h2{font-family:'Anton',sans-serif;font-size:26px;text-transform:uppercase;margin:22px 0 12px;}
+  h2 em{color:var(--acid);font-style:normal;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px;}
+  .card .tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--acid-dim);font-weight:700;}
+  .card h3{font-size:17px;margin:3px 0 8px;font-weight:800;}
+  .card ul{list-style:none;}
+  .card li{padding:6px 0;border-top:1px dashed var(--line);font-size:14.5px;display:flex;justify-content:space-between;gap:12px;}
+  .card li:first-child{border-top:none;}
+  .card li span{color:var(--mut);font-size:13px;white-space:nowrap;}
+  .note{font-size:13px;color:var(--mut);margin-top:6px;}
+  .macrobar{display:flex;height:10px;border-radius:6px;overflow:hidden;margin:14px 0 4px;border:1px solid var(--line);}
+  .macrobar i{display:block;height:100%;}
+  .legend{display:flex;gap:14px;font-size:12px;color:var(--mut);flex-wrap:wrap;}
+  .legend b{color:var(--txt);}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:middle;}
+  .day{background:var(--panel);border:1px solid var(--line);border-radius:16px;margin-bottom:10px;overflow:hidden;}
+  .day summary{list-style:none;cursor:pointer;padding:15px 16px;display:flex;align-items:center;gap:12px;}
+  .day summary::-webkit-details-marker{display:none;}
+  .dnum{font-family:'Anton',sans-serif;font-size:30px;color:var(--acid);line-height:1;min-width:34px;}
+  .dttl{flex:1;}
+  .dttl b{display:block;font-size:16px;font-weight:800;text-transform:uppercase;}
+  .dttl small{color:var(--mut);font-size:12px;}
+  .chev{color:var(--mut);transition:.2s;font-size:18px;}
+  details[open] .chev{transform:rotate(90deg);}
+  .ex{padding:0 16px 14px;}
+  .ex table{width:100%;border-collapse:collapse;}
+  .ex td{padding:8px 0;border-top:1px solid var(--line);font-size:14px;}
+  .ex td:last-child{text-align:right;color:var(--acid-dim);font-weight:700;white-space:nowrap;font-size:13px;}
+  .cardio{margin:2px 16px 14px;background:var(--panel2);border-radius:10px;padding:9px 12px;font-size:13px;color:var(--mut);}
+  .cardio b{color:var(--warn);}
+  .weekblock{margin-bottom:18px;}
+  .weekhead{display:flex;align-items:baseline;justify-content:space-between;margin:18px 0 8px;}
+  .weekhead h3{font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;}
+  .weekhead h3 b{color:var(--acid);}
+  .wprog{font-size:12px;color:var(--mut);font-weight:700;}
+  .weeknote{font-size:12.5px;color:var(--acid-dim);margin-bottom:10px;background:var(--panel);border-left:3px solid var(--acid);padding:8px 12px;border-radius:0 8px 8px 0;}
+  .trow{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px 13px;margin-bottom:8px;}
+  .trow .top{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+  .trow .top b{font-size:14px;font-weight:800;text-transform:uppercase;}
+  .trow .top small{color:var(--mut);font-size:12px;font-weight:600;margin-left:auto;}
+  .checks{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+  .chk{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 2px;border:1px solid var(--line);border-radius:10px;cursor:pointer;transition:.15s;background:var(--panel2);}
+  .chk .box{width:22px;height:22px;border-radius:7px;border:2px solid var(--mut);display:flex;align-items:center;justify-content:center;font-size:14px;color:#0a0b0a;font-weight:900;transition:.15s;}
+  .chk small{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);}
+  .chk.on{border-color:var(--acid);background:rgba(216,255,62,.08);}
+  .chk.on .box{background:var(--acid);border-color:var(--acid);}
+  .chk.on small{color:var(--txt);}
+  .notes-in{width:100%;margin-top:9px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;color:var(--txt);font-family:inherit;font-size:13px;padding:9px 11px;resize:vertical;min-height:38px;}
+  .notes-in:focus{outline:none;border-color:var(--acid-dim);}
+  .notes-in::placeholder{color:var(--mut);}
+  .overall{background:linear-gradient(135deg,#1c1f1b,#141614);border:1px solid var(--line);border-radius:16px;padding:16px;margin:6px 0 2px;text-align:center;}
+  .overall .big{font-family:'Anton',sans-serif;font-size:46px;color:var(--acid);line-height:1;}
+  .overall small{color:var(--mut);font-size:12px;letter-spacing:.14em;text-transform:uppercase;}
+  .ringtrack{height:9px;background:var(--panel2);border-radius:6px;overflow:hidden;margin-top:12px;}
+  .ringtrack i{display:block;height:100%;background:var(--acid);width:0;transition:width .5s;}
+  .reset{display:block;width:100%;margin-top:18px;padding:13px;background:transparent;border:1px solid var(--line);color:var(--mut);border-radius:12px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;}
+  .reset:active{background:var(--panel);}
+  footer{color:var(--mut);font-size:12px;text-align:center;padding:26px 0 8px;line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">30-Day Strict Cut</div>
+    <h1>Lean<span>.</span> Burn<span>.</span> Build<span>.</span></h1>
+    <p class="sub">85kg · 5'9" · 24y · 5-day split · ~2,200 kcal · high protein</p>
+    <div class="stats">
+      <div class="stat"><b>2200</b><small>kcal</small></div>
+      <div class="stat"><b>180g</b><small>protein</small></div>
+      <div class="stat"><b>5×</b><small>train/wk</small></div>
+      <div class="stat"><b>~2-3</b><small>kg goal</small></div>
+    </div>
+  </header>
+  <nav class="tabs">
+    <button class="tab active" data-t="plan">Eat</button>
+    <button class="tab" data-t="train">Train</button>
+    <button class="tab" data-t="track">Track</button>
+  </nav>
+
+  <section id="plan" class="active">
+    <h2>Daily <em>Fuel</em></h2>
+    <div class="macrobar"><i style="width:33%;background:var(--acid)"></i><i style="width:35%;background:#5fa8ff"></i><i style="width:32%;background:var(--warn)"></i></div>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--acid)"></i>Protein <b>~180g</b></span>
+      <span><i class="dot" style="background:#5fa8ff"></i>Carbs <b>~190g</b></span>
+      <span><i class="dot" style="background:var(--warn)"></i>Fat <b>~60g</b></span>
+    </div>
+    <div class="card"><div class="tag">Pre-gym · morning</div><h3>Workout Shake</h3><ul>
+      <li>Whey protein <span>1 scoop</span></li><li>Banana <span>1</span></li><li>Peanut butter (optional) <span>1 tbsp</span></li>
+    </ul><p class="note">Sip before training. Light + fast — saves the big food for after.</p></div>
+    <div class="card"><div class="tag">Meal 1 · post-gym breakfast</div><h3>Eggs & Oats</h3><ul>
+      <li>Whole eggs <span>4</span></li><li>Oats (dry, cook w/ water) <span>60g</span></li><li>Fruit — apple/orange <span>1</span></li>
+    </ul><p class="note">~630 kcal · biggest carb hit right after lifting.</p></div>
+    <div class="card"><div class="tag">Meal 2 · lunch</div><h3>Chicken, Rice & Curd</h3><ul>
+      <li>Chicken breast (cooked) <span>175g</span></li><li>Rice (cooked) <span>1 cup</span></li><li>Green veg <span>plenty</span></li><li>Curd <span>1 bowl</span></li>
+    </ul><p class="note">~630 kcal · load up on veg to stay full on fewer calories.</p></div>
+    <div class="card"><div class="tag">Meal 3 · dinner</div><h3>Lean Plate</h3><ul>
+      <li>Chicken (or dal) <span>150g</span></li><li>Multigrain bread <span>2 slices</span></li><li>Salad + veg <span>big</span></li><li>Guac <span>2 tbsp</span></li>
+    </ul><p class="note">~550 kcal · lighter on carbs since training's done.</p></div>
+    <div class="card"><div class="tag">Swaps & rules</div><h3>Stay Flexible</h3><ul>
+      <li>Chicken ⇄ eggs / dal / paneer</li><li>Rice ⇄ oats / extra bread</li><li>Curd ⇄ milk + whey</li>
+    </ul><p class="note">3–4L water daily · weigh food week 1 · 1 bigger meal/week is fine. Hit protein every day.</p></div>
+  </section>
+
+  <section id="train">
+    <h2>The <em>Split</em></h2>
+    <p class="sub" style="margin-bottom:14px">Mon–Fri lift + cardio · Sat–Sun active rest. Compounds first, ~75–90 min, then cardio.</p>
+    <details class="day" open><summary><span class="dnum">1</span><span class="dttl"><b>Push</b><small>Chest · Shoulders · Triceps</small></span><span class="chev">›</span></summary>
+      <div class="ex"><table><tr><td>Bench press</td><td>4 × 6–10</td></tr><tr><td>Incline DB press</td><td>3 × 8–12</td></tr><tr><td>Overhead press</td><td>3 × 8–12</td></tr><tr><td>Lateral raises</td><td>3 × 12–15</td></tr><tr><td>Cable pushdown</td><td>3 × 12–15</td></tr><tr><td>Overhead tri ext</td><td>2 × 12–15</td></tr></table></div>
+      <div class="cardio"><b>Cardio</b> · 20 min incline walk or cycle</div></details>
+    <details class="day"><summary><span class="dnum">2</span><span class="dttl"><b>Pull</b><small>Back · Biceps</small></span><span class="chev">›</span></summary>
+      <div class="ex"><table><tr><td>Deadlift / rack pull</td><td>4 × 5–8</td></tr><tr><td>Lat pulldown</td><td>3 × 8–12</td></tr><tr><td>Seated cable row</td><td>3 × 8–12</td></tr><tr><td>Face pulls</td><td>3 × 15</td></tr><tr><td>Barbell/DB curl</td><td>3 × 10–12</td></tr><tr><td>Hammer curl</td><td>2 × 12</td></tr></table></div>
+      <div class="cardio"><b>Cardio</b> · 20 min steady</div></details>
+    <details class="day"><summary><span class="dnum">3</span><span class="dttl"><b>Legs</b><small>Quads · Hams · Calves</small></span><span class="chev">›</span></summary>
+      <div class="ex"><table><tr><td>Squat</td><td>4 × 6–10</td></tr><tr><td>Leg press</td><td>3 × 10–12</td></tr><tr><td>Romanian deadlift</td><td>3 × 8–12</td></tr><tr><td>Leg curl</td><td>3 × 12</td></tr><tr><td>Leg extension</td><td>3 × 12–15</td></tr><tr><td>Standing calf raise</td><td>4 × 15</td></tr></table></div>
+      <div class="cardio"><b>Cardio</b> · 15 min easy</div></details>
+    <details class="day"><summary><span class="dnum">4</span><span class="dttl"><b>Upper</b><small>Mixed push + pull</small></span><span class="chev">›</span></summary>
+      <div class="ex"><table><tr><td>Incline bench</td><td>4 × 8–12</td></tr><tr><td>Pull-ups (assisted ok)</td><td>3 × max</td></tr><tr><td>Seated DB shoulder press</td><td>3 × 10</td></tr><tr><td>Chest-supported row</td><td>3 × 10–12</td></tr><tr><td>Lateral raises</td><td>3 × 15</td></tr><tr><td>Curl + pushdown superset</td><td>3 × 12</td></tr></table></div>
+      <div class="cardio"><b>Cardio</b> · 20 min steady</div></details>
+    <details class="day"><summary><span class="dnum">5</span><span class="dttl"><b>Lower + Core</b><small>Glutes · Legs · Abs</small></span><span class="chev">›</span></summary>
+      <div class="ex"><table><tr><td>Front / goblet squat</td><td>3 × 10</td></tr><tr><td>Bulgarian split squat</td><td>3 × 10/leg</td></tr><tr><td>Hip thrust</td><td>3 × 10–12</td></tr><tr><td>Leg curl</td><td>3 × 12</td></tr><tr><td>Calf raise</td><td>4 × 15–20</td></tr><tr><td>Hanging leg raise</td><td>3 × 12</td></tr><tr><td>Plank</td><td>3 × 45–60s</td></tr></table></div>
+      <div class="cardio"><b>Cardio</b> · 25 min steady</div></details>
+    <details class="day"><summary><span class="dnum">R</span><span class="dttl"><b>Rest · Sat & Sun</b><small>Recover & still move</small></span><span class="chev">›</span></summary>
+      <div class="ex"><table><tr><td>Walk</td><td>8–10k steps</td></tr><tr><td>Light stretch / mobility</td><td>10–15 min</td></tr></table></div>
+      <div class="cardio"><b>Note</b> · sleep 7–8h — recovery is where fat loss happens</div></details>
+  </section>
+
+  <section id="track">
+    <h2>30-Day <em>Log</em></h2>
+    <div class="overall"><div class="big" id="pctBig">0%</div><small>Month complete</small><div class="ringtrack"><i id="ringFill"></i></div></div>
+    <div id="trackerArea"></div>
+    <button class="reset" id="resetBtn">Reset all progress</button>
+  </section>
+
+  <footer>Built for a strict 30 days. Real results = keeping ~80% of these habits long-term.<br>Not medical advice — see a doctor before big diet/training changes.</footer>
+</div>
+
+<script>
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.addEventListener('click',()=>{
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+      document.querySelectorAll('section').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById(t.dataset.t).classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+
+  const STORE_KEY='cut-tracker-v1';
+  const DAYS=[{d:'Mon',n:'Push'},{d:'Tue',n:'Pull'},{d:'Wed',n:'Legs'},{d:'Thu',n:'Upper'},{d:'Fri',n:'Lower+Core'},{d:'Sat',n:'Rest / Walk'},{d:'Sun',n:'Rest / Walk'}];
+  const TASKS=[{k:'w',label:'Train'},{k:'d',label:'Diet'},{k:'s',label:'Steps'},{k:'h',label:'Water'}];
+  const WEEKNOTES=[
+    'Week 1 — Lock in form & portions. RPE 7 (leave ~3 reps in tank). Cardio 20 min · 8k steps.',
+    'Week 2 — Add 2.5–5kg or 1–2 reps where you can. RPE 8. Cardio 25 min · 9k steps.',
+    'Week 3 — Peak. RPE 8–9, add one drop set on the last move per muscle. Cardio 25–30 min · 10k steps.',
+    'Week 4 — Hold hard Mon–Thu, ease Fri to recover. Scale stalled? Add one 20-min cardio session. 10k steps.'
+  ];
+  const TOTAL=4*7*4;
+
+  // load from localStorage (works on GitHub Pages / any host)
+  let state={};
+  try{ const raw=localStorage.getItem(STORE_KEY); if(raw) state=JSON.parse(raw); }catch(e){ state={}; }
+  function save(){ try{ localStorage.setItem(STORE_KEY,JSON.stringify(state)); }catch(e){ console.error(e); } }
+
+  function countDone(){ return Object.keys(state).filter(k=>state[k]===true).length; }
+
+  function render(){
+    const area=document.getElementById('trackerArea');
+    let html='';
+    for(let w=1;w<=4;w++){
+      let wdone=0,rows='';
+      DAYS.forEach((day,di)=>{
+        let cells='';
+        TASKS.forEach(t=>{
+          const id=`w${w}d${di}${t.k}`;
+          const on=state[id]===true; if(on) wdone++;
+          cells+=`<div class="chk ${on?'on':''}" data-id="${id}"><div class="box">${on?'✓':''}</div><small>${t.label}</small></div>`;
+        });
+        rows+=`<div class="trow"><div class="top"><b>${day.d}</b><small>${day.n}</small></div><div class="checks">${cells}</div><textarea class="notes-in" data-note="w${w}d${di}_note" placeholder="Notes — weights, energy, PRs, how you felt…"></textarea></div>`;
+      });
+      html+=`<div class="weekblock"><div class="weekhead"><h3>Week <b>${w}</b></h3><div class="wprog">${wdone}/28</div></div><div class="weeknote">${WEEKNOTES[w-1]}</div>${rows}</div>`;
+    }
+    area.innerHTML=html;
+    area.querySelectorAll('.chk').forEach(c=>c.addEventListener('click',()=>{ const id=c.dataset.id; state[id]=!state[id]; save(); render(); }));
+    area.querySelectorAll('.notes-in').forEach(ta=>{
+      const id=ta.dataset.note;
+      ta.value=state[id]||'';
+      ta.addEventListener('input',()=>{ state[id]=ta.value; save(); });
+    });
+    const pct=Math.round(countDone()/TOTAL*100);
+    document.getElementById('pctBig').textContent=pct+'%';
+    document.getElementById('ringFill').style.width=pct+'%';
+  }
+
+  document.getElementById('resetBtn').addEventListener('click',()=>{
+    if(confirm('Reset all 30 days of progress and notes? This cannot be undone.')){ state={}; save(); render(); }
+  });
+
+  render();
+</script>
+</body>
+</html>
